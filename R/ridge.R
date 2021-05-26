@@ -12,9 +12,6 @@ ridge <- function(data, chrom) {
   # impute missing values (source data and user data)
 
 
-  # subset training data into 450k feature set and EPIC-only feature set
-
-
   # reduce x_train and user data to common CpG sites
   common <- intersect(colnames(x_train), colnames(data))
   data <- data[,common]
