@@ -4,9 +4,10 @@
 #' @param data A 450k feature data set with CpG sites as columns
 #' @return
 #' @export
-kernel <- function(data) {
-  # load required source files (training data, functions, subset indicators)
-
+kernel <- function(data,chrom) {
+  # load in training data
+  x_train <- get(noquote(paste('chr',chrom,'_xtrain', sep = "")), envir = asNamespace('missingmethyl'), inherits = FALSE)
+  y_train <- get(noquote(paste('chr',chrom,'_ytrain', sep = "")), envir = asNamespace('missingmethyl'), inherits = FALSE)
 
   # impute missing values (source data and user data)
 
