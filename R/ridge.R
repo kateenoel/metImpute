@@ -6,8 +6,10 @@
 #' @return
 #' @export
 ridge <- function(data, chrom) {
-  # load required source files (training data, functions, lambdas, subset indicators)
-
+  # create training data objects based on chrom input
+  x_train <- get(noquote(paste('chr',chrom,'_xtrain', sep = "")), envir = asNamespace('missingmethyl'), inherits = FALSE)
+  y_train <- get(noquote(paste('chr',chrom,'_ytrain', sep = "")), envir = asNamespace('missingmethyl'), inherits = FALSE)
+  lam <-  get(noquote(paste('chr',chrom,'_lambdas', sep = "")), envir = asNamespace('missingmethyl'), inherits = FALSE)
 
   # impute missing values (source data and user data)
 
@@ -18,12 +20,12 @@ ridge <- function(data, chrom) {
   x_train <- x_train[,common]
 
   # run imputation models
-  y_pred <- matrix(NA,nrow=nrow(x_test),ncol=ncol(y_train)) # set up results matrix
+  y_pred <- matrix(NA,nrow=nrow(data),ncol=ncol(y_train)) # set up results matrix
   colnames(y_pred) <- colnames(y_train) # preserve column names
   for(i in 1:ncol(y_train)){
     if(!any(is.na(y_train[,i]))){
       fit=glmnet(x_train,y_train[,i], alpha=0, lambda = lam[i,2])
-      y_pred[,i] <- predict(fit,newx=x_test)
+      y_pred[,i] <- predict(fit,newx=data)
     }
   }
 
