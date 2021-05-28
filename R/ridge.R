@@ -5,7 +5,7 @@
 #' @param chrom Indicator of chromosome
 #' @return
 #' @export
-ridge <- function(data, chrom) {
+ridge <- function(data, chrom, path) {
   # create training data objects based on chrom input
   x_train <- get(noquote(paste('chr',chrom,'_xtrain', sep = "")), envir = asNamespace('missingmethyl'), inherits = FALSE)
   y_train <- get(noquote(paste('chr',chrom,'_ytrain', sep = "")), envir = asNamespace('missingmethyl'), inherits = FALSE)
@@ -29,6 +29,8 @@ ridge <- function(data, chrom) {
     }
   }
 
-  # return
-
+  # save 450k feature set + imputed EPIC probes to specified file location
+  EPIC <- cbind(data, y_pred)
+  save_location <- paste(path,'chr',chrom,'EPIC',sep='')
+  saveRDS(EPIC, save_location)
 }
