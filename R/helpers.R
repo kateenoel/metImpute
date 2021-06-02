@@ -1,23 +1,3 @@
-penreg<-function(i, x_train, y_train, x_test, y_test){
-  coeff=c(); T.alphas=c(); T.lambdas=c(); y_pred=c()
-  if(!any(is.na(y_train[,i]))){
-    cvm <- 10000000;lambda <- -1
-    cv <- cv.glmnet(x_train, y_train[,i], alpha=0, type.measure = "mse", nfolds = 10)
-    if(min(cv$cvm)<cvm) {
-      cvm <- min(cv$cvm)
-      alpha <- 0
-      lambda <- cv$lambda.min
-      fit=glmnet(x_train,y_train[,i],alpha=0,lambda=cv$lambda.min)
-      y_pred=predict(fit,newx=x_test); rownames(y_pred)=NULL;
-      y_pred=y_pred[,1]
-      coeff=coef(fit)[,1]
-    }
-    T.alphas=alpha
-    T.lambdas=lambda
-    return(list(al=T.alphas,lam=T.lambdas,coef=coeff,y_pred=y_pred))
-  }
-}
-
 train_psi_mat = function(x, ker){
 
   kermat =kernelMatrix(ker, x)
