@@ -21,17 +21,16 @@ ridge <- function(data450, data850, chrom, path) {
 
   # split data850 into x_train (450k feature set) and y_train (EPIC only feature set)
   indicator <- missingmethyl::indicatordata
-  indicator$Methyl450_Loci[is.na(indicator$Methyl450_Loci)] <- FALSE
   ind_xtrain <- subset(indicator, Methyl450_Loci == TRUE)
   ind_ytrain <- subset(indicator, Methyl450_Loci == FALSE)
-  x_train <- subset(data850, rownames(data850) %in% ind_xtrain$IlmnID)
-  y_train <- subset(data850, rownames(data850) %in% ind_ytrain$IlmnID)
+  x_train <- subset(data850, colnames(data850) %in% ind_xtrain$IlmnID)
+  y_train <- subset(data850, colnames(data850) %in% ind_ytrain$IlmnID)
   x_test <- data450
 
   # reduce x_train and user data (x_test) to common CpG sites
-  common <- intersect(rownames(x_train), rownames(x_test))
-  x_train <- x_train[common,]
-  x_test <- x_test[common,]
+  common <- intersect(colnames(x_train), colnames(x_test))
+  x_train <- x_train[,common]
+  x_test <- x_test[,common]
 
   # run imputation models
   y_pred <- matrix(NA,nrow=nrow(data),ncol=ncol(y_train)) # set up results matrix
@@ -39,8 +38,8 @@ ridge <- function(data450, data850, chrom, path) {
   rownames(y_pred) <- rownames(y_train) # preserve row names
   for(i in 1:ncol(y_train)){
     if(!any(is.na(y_train[,i]))){
-      fit=glmnet(x_train,y_train[,i], alpha=0, lambda = lam[i,2])
-      y_pred[,i] <- predict(fit,newx=x_test)
+      fit <- glmnet::glmnet(x_train, y_train[,i], alpha=0, lambda = lam[i,2])
+      y_pred[,i] <- predict(fit, newx = x_test)
     }
   }
 

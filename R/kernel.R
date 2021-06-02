@@ -16,21 +16,20 @@ kernel <- function(data450, data850, chrom, path, sigma = 0.001) {
 
   # split data850 into x_train (450k feature set) and y_train (EPIC only feature set)
   indicator <- missingmethyl::indicatordata
-  indicator$Methyl450_Loci[is.na(indicator$Methyl450_Loci)] <- FALSE
   ind_xtrain <- subset(indicator, Methyl450_Loci == TRUE)
   ind_ytrain <- subset(indicator, Methyl450_Loci == FALSE)
-  x_train <- subset(data850, rownames(data850) %in% ind_xtrain$IlmnID)
-  y_train <- subset(data850, rownames(data850) %in% ind_ytrain$IlmnID)
+  x_train <- subset(data850, colnames(data850) %in% ind_xtrain$IlmnID)
+  y_train <- subset(data850, colnames(data850) %in% ind_ytrain$IlmnID)
   x_test <- data450
 
   # reduce x_train and user data (x_test) to common CpG sites
-  common <- intersect(rownames(x_train), rownames(x_test))
-  x_train <- x_train[common,]
-  x_test <- x_test[common,]
+  common <- intersect(colnames(x_train), colnames(x_test))
+  x_train <- x_train[,common]
+  x_test <- x_test[,common]
 
   # run models
   rbfker <- kernlab::rbfdot(sigma = sigma)
-  y_pred <- kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
+  y_pred <- missingmethyl::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
 
   # save and export imputed EPIC probes to specified file location
   EPIC <- y_pred
