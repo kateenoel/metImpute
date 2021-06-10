@@ -4,7 +4,7 @@
 #' @param data A 450k feature data set with CpG sites as columns
 #' @return
 #' @export
-kernel <- function(data450, data850, chrom, path, sigma = 0.001) {
+kernel <- function(data450, data850, chrom, path, sigma = NULL) {
   # impute missing values with the column mean (source data and user data)
   for(i in 1:ncol(data850)) {
     data850[is.na(data850[,i]), i] <- mean(data850[,i], na.rm = TRUE)
@@ -28,8 +28,16 @@ kernel <- function(data450, data850, chrom, path, sigma = 0.001) {
   x_test <- x_test[,common]
 
   # run models
-  rbfker <- kernlab::rbfdot(sigma = sigma)
-  y_pred <- missingmethyl::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
+  if (!is.null(sigma)) { # user supplied a sigma
+    rbfker <- kernlab::rbfdot(sigma = sigma)
+    y_pred <- missingmethyl::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
+  }
+  else{ # user did not supply a sigma
+    sigma <- sigmas[chrom, 2] # retrieve sigma associated with chromosome
+    rbfker <- kernlab::rbfdot(sigma = sigma)
+    y_pred <- missingmethyl::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
+  }
+
 
   # save and export imputed EPIC probes to specified file location
   EPIC <- y_pred
