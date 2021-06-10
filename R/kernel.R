@@ -49,5 +49,6 @@ kernel <- function(data450, data850, chrom, path, sigma = NULL) {
   saveRDS(x_test, data450_save_path)
 
   # save and export summary statistics table
-
+  summary_stats_save_path <- paste(path, '/chr', chrom, '_summarystasts.rds',sep='')
+  saveRDS(missingmethyl::summary_stats, summary_stats_save_path)
 }
