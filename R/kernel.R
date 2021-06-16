@@ -1,11 +1,15 @@
 #' Kernel
 #'
-#' Description of function
+#' Use radial basis function kernel method to impute EPIC platform CpG sites from an HM450 probe set
 #' @param data450 An HM450 data set with CpG sites as columns
 #' @param data850 An EPIC probe data set with CpG sites as columns
 #' @param chrom Indicator of chromosome
 #' @param path File path for output file export
-#' @param sigma Optionally fix sigma to desired value
+#' @param sigma Optionally fix parameter sigma to desired value
+#' @return Imputed EPIC probe set and summary statistics file
+#' @examples
+#' kernel(HM450, EPIC, 22, '/home/project/results')
+#' kernel(HM450, EPIC, 'X', '/home/project/results')
 #' @export
 kernel <- function(data450, data850, chrom, path, sigma = NULL) {
   # special case for sex chromosomes
