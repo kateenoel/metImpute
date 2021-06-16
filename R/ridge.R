@@ -3,9 +3,8 @@
 #' Use penalized ridge regression to impute EPIC platform CpG sites from an HM450 probe set
 #' @param data450 An HM450 probe data set with CpG sites as columns
 #' @param data850 An EPIC probe data set with CpG sites as columns
-#' @param chrom Indicator of chromosome
-#' @param path File path for output file export
-#' @return Imputed EPIC probe set and summary statistics file
+#' @param chrom Indicator of chromosome (e.g. 22 or 'X')
+#' @param path Output directory for imputed EPIC probe set and summary statistics
 #' @examples
 #' ridge(HM450, EPIC, 22, '/home/project/results')
 #' ridge(HM450, EPIC, 'X', '/home/project/results')
