@@ -12,7 +12,6 @@ pred_psi_mat <- function(xp,x_train,psi_mat,lambda,ker){
   return(psi_p)
 }
 
-
 scatter_pred <- function(y_pred,y_test,idx = 1,pch=19,cex=0.5,main=NULL,ylim=NULL,xlim=NULL){
   plot(y_pred[,1],y_test[,1],ylim=ylim,xlim=xlim,
        pch=pch,xlab="Prediction",ylab="Observation",cex=cex,main=main)
@@ -31,7 +30,6 @@ rbf_kernel_pred <- function(x_train,y_train,x_test,sigma1 = 0.0001){
   y_pred <- test_psi_mat%*%beta_coef
   return(y_pred)
 }
-
 
 kernel_pred <- function(x_train,y_train,x_test,ker,alpha=0.95,output=NULL){
   train_fit <- metImpute::train_psi_mat(x_train,ker)
