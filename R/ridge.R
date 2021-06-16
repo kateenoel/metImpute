@@ -1,14 +1,14 @@
 #' Ridge regression
 #'
 #' Description of function
-#' @param data450 A 450k feature data set with CpG sites as columns
-#' @param data850 An EPIC feature data set with CpG sites as columns
+#' @param data450 An HM450 probe data set with CpG sites as columns
+#' @param data850 An EPIC probe data set with CpG sites as columns
 #' @param chrom Indicator of chromosome
-#' @return
+#' @param path File path for output file export
 #' @export
 ridge <- function(data450, data850, chrom, path) {
   # create training data objects based on chrom input
-  lam <-  get(noquote(paste('chr',chrom,'_lambdas', sep = "")), envir = asNamespace('metImpute'), inherits = FALSE)
+  lam <-  get(noquote(paste('chr',chrom,'_lambdas', sep = '')), envir = asNamespace('metImpute'), inherits = FALSE)
 
   # impute missing values with the column mean (source data and user data)
   for(i in 1:ncol(data850)) {
