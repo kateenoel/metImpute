@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Kate Noel <noel0047@umn.edu>
 Maintainer: Kate Noel <noel0047@umn.edu>
 Description: metImpute is an R package for imputing the average degree of DNA methylation state for EPIC platform CpG sites. We offer both the RBF kernel method and ridge regression method for the imputation.
-License: What license is it under?
+License: GPL-3.0
 Encoding: UTF-8
 LazyData: true
 Imports:
