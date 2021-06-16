@@ -15,7 +15,7 @@ kernel <- function(data450, data850, chrom, path, sigma = NULL) {
   }
 
   # split data850 into x_train (450k feature set) and y_train (EPIC only feature set)
-  indicator <- missingmethyl::indicatordata
+  indicator <- metImpute::indicatordata
   ind_xtrain <- subset(indicator, Methyl450_Loci == TRUE)
   ind_ytrain <- subset(indicator, Methyl450_Loci == FALSE)
   x_train <- subset(data850, colnames(data850) %in% ind_xtrain$IlmnID)
@@ -30,12 +30,12 @@ kernel <- function(data450, data850, chrom, path, sigma = NULL) {
   # run models
   if (!is.null(sigma)) { # user supplied a sigma
     rbfker <- kernlab::rbfdot(sigma = sigma)
-    y_pred <- missingmethyl::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
+    y_pred <- metImpute::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
   }
   else{ # user did not supply a sigma
     sigma <- sigmas[chrom, 2] # retrieve sigma associated with chromosome
     rbfker <- kernlab::rbfdot(sigma = sigma)
-    y_pred <- missingmethyl::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
+    y_pred <- metImpute::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
   }
 
 
@@ -49,6 +49,6 @@ kernel <- function(data450, data850, chrom, path, sigma = NULL) {
   saveRDS(x_test, data450_save_path)
 
   # save and export summary statistics table
-  summary_stats_save_path <- paste(path, '/chr', chrom, '_summarystasts.rds',sep='')
-  saveRDS(missingmethyl::summary_stats, summary_stats_save_path)
+  summary_stats_save_path <- paste(path, '/chr', chrom, '_summarystats.rds',sep='')
+  saveRDS(metImpute::summary_stats, summary_stats_save_path)
 }

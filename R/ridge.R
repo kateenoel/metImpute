@@ -8,7 +8,7 @@
 #' @export
 ridge <- function(data450, data850, chrom, path) {
   # create training data objects based on chrom input
-  lam <-  get(noquote(paste('chr',chrom,'_lambdas', sep = "")), envir = asNamespace('missingmethyl'), inherits = FALSE)
+  lam <-  get(noquote(paste('chr',chrom,'_lambdas', sep = "")), envir = asNamespace('metImpute'), inherits = FALSE)
 
   # impute missing values with the column mean (source data and user data)
   for(i in 1:ncol(data850)) {
@@ -20,7 +20,7 @@ ridge <- function(data450, data850, chrom, path) {
   }
 
   # split data850 into x_train (450k feature set) and y_train (EPIC only feature set)
-  indicator <- missingmethyl::indicatordata
+  indicator <- metImpute::indicatordata
   ind_xtrain <- subset(indicator, Methyl450_Loci == TRUE)
   ind_ytrain <- subset(indicator, Methyl450_Loci == FALSE)
   x_train <- subset(data850, colnames(data850) %in% ind_xtrain$IlmnID)
@@ -54,5 +54,5 @@ ridge <- function(data450, data850, chrom, path) {
 
   # save and export summary statistics table
   summary_stats_save_path <- paste(path, '/chr', chrom, '_summarystasts.rds',sep='')
-  saveRDS(missingmethyl::summary_stats, summary_stats_save_path)
+  saveRDS(metImpute::summary_stats, summary_stats_save_path)
 }
