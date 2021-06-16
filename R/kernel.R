@@ -1,11 +1,26 @@
 #' Kernel
 #'
 #' Description of function
-#' @param data A 450k feature data set with CpG sites as columns
-#' @return
+#' @param data450 An HM450 data set with CpG sites as columns
+#' @param data850 An EPIC probe data set with CpG sites as columns
+#' @param chrom Indicator of chromosome
+#' @param path File path for output file export
+#' @param sigma Optionally fix sigma to desired value
 #' @export
 kernel <- function(data450, data850, chrom, path, sigma = NULL) {
-  # impute missing values with the column mean (source data and user data)
+  # special case for sex chromosomes
+  chrom_val <- NULL
+  if (chrom == 'X') {
+    chrom_val <- 23
+  }
+  if (chrom == 'Y') {
+    chrom_val <- 24
+  }
+  else {
+    chrom_val <- chrom
+  }
+
+   # impute missing values with the column mean (source data and user data)
   for(i in 1:ncol(data850)) {
     data850[is.na(data850[,i]), i] <- mean(data850[,i], na.rm = TRUE)
   }
@@ -33,11 +48,10 @@ kernel <- function(data450, data850, chrom, path, sigma = NULL) {
     y_pred <- metImpute::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
   }
   else{ # user did not supply a sigma
-    sigma <- sigmas[chrom, 2] # retrieve sigma associated with chromosome
+    sigma <- sigmas[chrom_val, 2] # retrieve sigma associated with chromosome
     rbfker <- kernlab::rbfdot(sigma = sigma)
     y_pred <- metImpute::kernel_pred(x_train,y_train,x_test,ker=rbfker,alpha=0.99)
   }
-
 
   # save and export imputed EPIC probes to specified file location
   EPIC <- y_pred
