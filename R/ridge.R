@@ -48,6 +48,6 @@ ridge <- function(data450, data850, chrom, path) {
   saveRDS(EPIC, EPIC_save_path)
 
   # save and export summary statistics table
-  summary_stats_save_path <- paste(path, '/chr', chrom, '_summarystasts.rds',sep='')
+  summary_stats_save_path <- paste(path, '/chr', chrom, '_summarystats.rds',sep='')
   saveRDS(metImpute::summary_stats, summary_stats_save_path)
 }
