@@ -1,4 +1,4 @@
-#' Ridge regression
+#' metRidge
 #'
 #' Use penalized ridge regression to impute EPIC platform CpG sites from an HM450 probe set
 #' @param data450 An HM450 probe data set with CpG sites as columns
