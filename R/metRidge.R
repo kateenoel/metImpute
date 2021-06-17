@@ -6,10 +6,10 @@
 #' @param chrom Indicator of chromosome (e.g. 22 or 'X')
 #' @param path Output directory for imputed EPIC probe set and summary statistics
 #' @examples
-#' ridge(HM450, EPIC, 22, '/home/project/results')
-#' ridge(HM450, EPIC, 'X', '/home/project/results')
+#' metRidge(HM450, EPIC, 22, '/home/project/results')
+#' metRidge(HM450, EPIC, 'X', '/home/project/results')
 #' @export
-ridge <- function(data450, data850, chrom, path) {
+metRidge <- function(data450, data850, chrom, path) {
   # create training data objects based on chrom input
   lam <-  get(noquote(paste('chr',chrom,'_lambdas', sep = '')), envir = asNamespace('metImpute'), inherits = FALSE)
 

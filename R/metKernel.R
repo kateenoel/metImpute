@@ -7,10 +7,10 @@
 #' @param path Output directory for imputed EPIC probe set and summary statistics
 #' @param sigma Optional, if present fixes tuning parameter to value
 #' @examples
-#' kernel(HM450, EPIC, 22, '/home/project/results')
-#' kernel(HM450, EPIC, 'X', '/home/project/results', sigma = 0.001)
+#' metKernel(HM450, EPIC, 22, '/home/project/results')
+#' metKernel(HM450, EPIC, 'X', '/home/project/results', sigma = 0.001)
 #' @export
-kernel <- function(data450, data850, chrom, path, sigma = NULL) {
+metKernel <- function(data450, data850, chrom, path, sigma = NULL) {
   # special case for sex chromosomes
   chrom_val <- NULL
   if (chrom == 'X') {chrom_val <- 23}
