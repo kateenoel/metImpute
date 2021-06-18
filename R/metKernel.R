@@ -1,6 +1,6 @@
 #' metKernel
 #'
-#' Use radial basis function (RBF) kernel method to impute EPIC platform CpG sites from an HM450 probe set
+#' Use radial basis function (RBF) kernel method to impute level of methylation for EPIC platform CpG sites from an HM450 probe set
 #' @param data450 An HM450 data set with CpG sites as columns
 #' @param data850 An EPIC probe data set with CpG sites as columns
 #' @param chrom Indicator of chromosome (e.g. 22 or 'X')
