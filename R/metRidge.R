@@ -18,7 +18,7 @@ metRidge <- function(data450, data850, chrom, path) {
 
   for(i in 1:ncol(data450)) {data450[is.na(data450[,i]), i] <- mean(data450[,i], na.rm = TRUE)}
 
-  # split data850 into x_train (450k feature set) and y_train (EPIC only feature set)
+  # split data850 into x_train (HM450 probes) and y_train (EPIC-only probes)
   indicator <- metImpute::indicatordata
   ind_xtrain <- subset(indicator, Methyl450_Loci == TRUE)
   ind_ytrain <- subset(indicator, Methyl450_Loci == FALSE)
@@ -31,10 +31,15 @@ metRidge <- function(data450, data850, chrom, path) {
   x_train <- x_train[,common]
   x_test <- x_test[,common]
 
+  # reduce y_train to probes with tuned lambda values
+  common2 <- intersect(colnames(y_train), rownames(lam))
+  y_train <- y_train[,common2]
+  lam <- lam[common2,]
+
   # run imputation models
-  y_pred <- matrix(NA,nrow=nrow(data),ncol=ncol(y_train)) # set up results matrix
+  y_pred <- matrix(NA,nrow=nrow(x_test),ncol=ncol(y_train)) # set up results matrix
   colnames(y_pred) <- colnames(y_train) # preserve column names
-  rownames(y_pred) <- rownames(y_train) # preserve row names
+  rownames(y_pred) <- rownames(x_test) # preserve row names
   for(i in 1:ncol(y_train)){
     if(!any(is.na(y_train[,i]))){
       fit <- glmnet::glmnet(x_train, y_train[,i], alpha=0, lambda = lam[i,2])
